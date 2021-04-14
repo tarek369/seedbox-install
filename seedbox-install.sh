@@ -87,11 +87,20 @@ plex(){
 }
 
 sonarr(){
-	sudo apt-get install libmono-cil-dev;
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC;
-	sudo echo "deb http://apt.sonarr.tv/ master main" | sudo tee /etc/apt/sources.list.d/sonarr.list;
-	sudo apt-get update;
-	sudo apt-get install nzbdrone;
+	## Add Mono repo
+	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+	sudo apt install apt-transport-https ca-certificates
+	echo "deb https://download.mono-project.com/repo/ubuntu stable-xenial main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+	sudo apt update
+	#########
+	#Add Sonarr repo
+	#########
+	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 2009837CBFFD68F45BC180471F4F90DE2A9B4BF8
+	echo "deb https://apt.sonarr.tv/ubuntu xenial main" | sudo tee /etc/apt/sources.list.d/sonarr.list
+	sudo apt update
+	############
+	sudo apt install sonarr
+
 
 	sudo echo "[Unit]
 	Description=Sonarr Daemon
@@ -100,7 +109,7 @@ sonarr(){
 	User=${username}
 	Type=simple
 	PermissionsStartOnly=true
-	ExecStart=/usr/bin/mono /opt/NzbDrone/NzbDrone.exe -nobrowser
+	ExecStart=/opt/Sonarr/Sonarr -data=/home/${username}/.config/Sonarr/
 	TimeoutStopSec=20
 	KillMode=process
 	Restart=on-failure
@@ -109,7 +118,7 @@ sonarr(){
 	WantedBy=multi-user.target
 	" > /etc/systemd/system/sonarr.service;
 
-	sudo chown -R ${username}:${username} /opt/NzbDrone/
+	sudo chown -R ${username}:${username} /opt/Sonarr/
 
 	systemctl enable sonarr.service;
 	sudo service sonarr start;
