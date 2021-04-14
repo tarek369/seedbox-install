@@ -129,7 +129,7 @@ radarr(){
 	sudo apt update && apt install libmono-cil-dev curl mediainfo;
 	sudo apt-get install mono-devel mediainfo sqlite3 libmono-cil-dev -y;
 	cd /tmp;
-	wget https://github.com/Radarr/Radarr/releases/download/v0.2.0.45/Radarr.develop.0.2.0.45.linux.tar.gz;
+	wget https://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64;
 	sudo tar -xf Radarr* -C /opt/;
 	sudo chown -R ${username}:${username} /opt/Radarr;
 
